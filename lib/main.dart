@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:spent/models/transaction.dart';
+import 'package:intl/intl.dart';
 
 main() => runApp(SpentApp());
 
@@ -24,7 +25,7 @@ class MyHomePage extends StatelessWidget {
     Transaction(
       id: 'T2',
       title: 'Notebook Samsung',
-      value: 895.00,
+      value: 895.52,
       date: DateTime.now(),
     )
   ];
@@ -36,9 +37,9 @@ class MyHomePage extends StatelessWidget {
         title: Text("Despesas Pessoais"),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          // Grafico
           Container(
             child: Card(
               color: Colors.blue,
@@ -46,6 +47,7 @@ class MyHomePage extends StatelessWidget {
               elevation: 5,
             ),
           ),
+
           // Transaction List
           Column(
             children: _transactions.map((transaction) {
@@ -64,7 +66,7 @@ class MyHomePage extends StatelessWidget {
                       )),
                       padding: EdgeInsets.all(10),
                       child: Text(
-                        transaction.value.toString(),
+                        'R\$ ${transaction.value.toStringAsFixed(2)}',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
@@ -82,7 +84,7 @@ class MyHomePage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          transaction.date.toString(),
+                          DateFormat('d MMM y').format(transaction.date),
                           style: TextStyle(color: Colors.grey),
                         )
                       ],
@@ -91,7 +93,42 @@ class MyHomePage extends StatelessWidget {
                 ),
               );
             }).toList(),
-          )
+          ),
+          Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: <Widget>[
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Descrição',
+                      ),
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Valor (R\$)',
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.purple,
+                          ),
+                          onPressed: () {},
+                          child: Text('Nova Transação'),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
