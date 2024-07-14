@@ -43,9 +43,7 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 6,
       margin: const EdgeInsets.all(20),
-      color: Theme.of(context).colorScheme.inversePrimary,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
@@ -58,7 +56,9 @@ class Chart extends StatelessWidget {
               child: ChartBar(
                 label: transaction['day'] as String,
                 value: totalValueByDay,
-                percentage: totalValueByDay / _weekTotalValue,
+                percentage: _weekTotalValue == 0
+                    ? 0
+                    : totalValueByDay / _weekTotalValue,
               ),
             );
           }).toList(),

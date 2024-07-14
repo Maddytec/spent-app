@@ -15,7 +15,7 @@ class SpentApp extends StatelessWidget {
     final primary = Colors.blueAccent[700];
     final secondary = Colors.blue[300];
     final inversePrimary = Colors.blue[50];
-    final errorPrimary = Colors.indigo[900];
+    final errorPrimary = Colors.redAccent[700];
 
     return MaterialApp(
       home: MyHomePage(),
@@ -33,9 +33,15 @@ class SpentApp extends StatelessWidget {
           shadowColor: primary,
           backgroundColor: inversePrimary,
         ),
-        iconTheme: IconThemeData(
-          color: Colors.red[50],
+        cardTheme: CardTheme(
+          color: inversePrimary,
+          shadowColor: primary,
+          elevation: 6,
         ),
+        iconTheme: IconThemeData(
+          color: inversePrimary,
+        ),
+        iconButtonTheme: IconButtonThemeData(),
         textTheme: theme.textTheme.copyWith(
           titleSmall: TextStyle(
             fontFamily: 'Quicksand',
@@ -82,24 +88,24 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    Transaction(
-      id: 'T1',
-      title: 'Notebook Nitro 5',
-      value: 1300.00,
-      date: DateTime.now().subtract(Duration(days: 3)),
-    ),
-    Transaction(
-      id: 'T2',
-      title: 'Notebook Samsung',
-      value: 895.52,
-      date: DateTime.now().subtract(Duration(days: 4)),
-    ),
-    Transaction(
-      id: 'T0',
-      title: 'Notebook Samsung A',
-      value: 800.00,
-      date: DateTime.now().subtract(Duration(days: 20)),
-    ),
+    // Transaction(
+    //   id: 'T1',
+    //   title: 'Notebook Nitro 5',
+    //   value: 1300.00,
+    //   date: DateTime.now().subtract(Duration(days: 3)),
+    // ),
+    // Transaction(
+    //   id: 'T2',
+    //   title: 'Notebook Samsung',
+    //   value: 895.52,
+    //   date: DateTime.now().subtract(Duration(days: 4)),
+    // ),
+    // Transaction(
+    //   id: 'T0',
+    //   title: 'Notebook Samsung A',
+    //   value: 800.00,
+    //   date: DateTime.now().subtract(Duration(days: 20)),
+    // ),
   ];
 
   List<Transaction> get _recentTransactions {
@@ -109,12 +115,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  _addTransaction(String description, double value) {
+  _addTransaction(String description, double value, DateTime transactionDate) {
     final newTransaction = Transaction(
       id: Random().nextDouble().toString(),
       title: description,
       value: value,
-      date: DateTime.now(),
+      date: transactionDate,
     );
 
     setState(() {
@@ -124,8 +130,15 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop(); //close popup
   }
 
+  _removeTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((transaction) => transaction.id == id);
+    });
+  }
+
   _openTransactionFormModal(BuildContext context) {
     showModalBottomSheet(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         context: context,
         builder: (_) {
           return TransactionForm(_addTransaction);
@@ -156,7 +169,10 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               child: Chart(recentTransaction: _recentTransactions),
             ),
-            TransactionList(_transactions),
+            TransactionList(
+              transactions: _transactions,
+              onRemove: _removeTransaction,
+            ),
           ],
         ),
       ),
