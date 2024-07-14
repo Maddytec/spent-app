@@ -68,7 +68,7 @@ class _TransactionFormState extends State<TransactionForm> {
                       foregroundColor: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: _submitForm,
-                    child: Text('Guardar Transação'),
+                    child: const Text('Guardar Transação'),
                   ),
                 ],
               )
