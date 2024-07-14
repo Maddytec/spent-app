@@ -87,26 +87,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    // Transaction(
-    //   id: 'T1',
-    //   title: 'Notebook Nitro 5',
-    //   value: 1300.00,
-    //   date: DateTime.now().subtract(Duration(days: 3)),
-    // ),
-    // Transaction(
-    //   id: 'T2',
-    //   title: 'Notebook Samsung',
-    //   value: 895.52,
-    //   date: DateTime.now().subtract(Duration(days: 4)),
-    // ),
-    // Transaction(
-    //   id: 'T0',
-    //   title: 'Notebook Samsung A',
-    //   value: 800.00,
-    //   date: DateTime.now().subtract(Duration(days: 20)),
-    // ),
-  ];
+  final List<Transaction> _transactions = [];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((transaction) {
@@ -147,31 +128,41 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text("Despesas Pessoais"),
+      backgroundColor: AppBarTheme.of(context).backgroundColor,
+      actions: [
+        IconButton(
+          icon: Icon(
+            Icons.add,
+            color: Theme.of(context).colorScheme.inversePrimary,
+          ),
+          onPressed: () => _openTransactionFormModal(context),
+        )
+      ],
+    );
+
+    final availableHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Despesas Pessoais"),
-        backgroundColor: AppBarTheme.of(context).backgroundColor,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Theme.of(context).colorScheme.inversePrimary,
-            ),
-            onPressed: () => _openTransactionFormModal(context),
-          )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
+          children: [
             // Grafico
             Container(
+              height: availableHeight * 0.3,
               child: Chart(recentTransaction: _recentTransactions),
             ),
-            TransactionList(
-              transactions: _transactions,
-              onRemove: _removeTransaction,
+            Container(
+              height: availableHeight * 0.7,
+              child: TransactionList(
+                transactions: _transactions,
+                onRemove: _removeTransaction,
+              ),
             ),
           ],
         ),
