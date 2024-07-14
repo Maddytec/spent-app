@@ -38,42 +38,35 @@ class TransactionList extends StatelessWidget {
               itemBuilder: (ctx, index) {
                 final transaction = transactions[index];
                 return Card(
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 2,
-                        )),
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'R\$ ${transaction.value.toStringAsFixed(2)}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Theme.of(context).colorScheme.primary),
+                  elevation: 5,
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                  shadowColor: Theme.of(context).colorScheme.primary,
+                  margin: EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 5,
+                  ),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor:
+                          Theme.of(context).colorScheme.inversePrimary,
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: FittedBox(
+                          child: Text('R\$${transaction.value}'),
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            transaction.title,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          Text(
-                            DateFormat('d MMM y').format(transaction.date),
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary),
-                          )
-                        ],
-                      )
-                    ],
+                    ),
+                    title: Text(
+                      transaction.title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    style: ListTileTheme.of(context).style,
+                    subtitle: Text(
+                      DateFormat('d MMM y').format(transaction.date),
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
                   ),
                 );
               },

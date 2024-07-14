@@ -31,7 +31,7 @@ class Chart extends StatelessWidget {
         'day': firstLetterOfWeekDay,
         'totalValueByDay': totalSum,
       };
-    });
+    }).reversed.toList();
   }
 
   double get _weekTotalValue {
@@ -45,6 +45,7 @@ class Chart extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: const EdgeInsets.all(20),
+      color: Theme.of(context).colorScheme.inversePrimary,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(

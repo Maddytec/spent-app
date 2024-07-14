@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:spent/components/chart.dart';
 import 'package:spent/components/transaction_form.dart';
 import 'package:spent/components/transaction_list.dart';
@@ -27,26 +26,39 @@ class SpentApp extends StatelessWidget {
           inversePrimary: inversePrimary,
           error: errorPrimary,
         ),
-        iconTheme: IconThemeData(color: Colors.red[50]),
+        datePickerTheme: DatePickerThemeData(
+          headerBackgroundColor: primary,
+          headerForegroundColor: inversePrimary,
+          elevation: 20,
+          shadowColor: primary,
+          backgroundColor: inversePrimary,
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.red[50],
+        ),
         textTheme: theme.textTheme.copyWith(
           titleSmall: TextStyle(
             fontFamily: 'Quicksand',
             fontSize: 14,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
             color: primary,
           ),
           titleMedium: TextStyle(
             fontFamily: 'Quicksand',
             fontSize: 16,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
             color: primary,
           ),
           titleLarge: TextStyle(
             fontFamily: 'Quicksand',
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
             color: primary,
           ),
+        ),
+        listTileTheme: ListTileThemeData(
+          style: ListTileStyle.list,
+          textColor: primary,
         ),
         appBarTheme: AppBarTheme(
           backgroundColor: primary,
@@ -93,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Transaction> get _recentTransactions {
     return _transactions.where((transaction) {
       return transaction.date
-          .isAfter(DateTime.now().subtract(Duration(days: 7)));
+          .isAfter(DateTime.now().subtract(const Duration(days: 7)));
     }).toList();
   }
 
@@ -141,7 +153,9 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             // Grafico
-            Container(child: Chart(recentTransaction: _recentTransactions)),
+            Container(
+              child: Chart(recentTransaction: _recentTransactions),
+            ),
             TransactionList(_transactions),
           ],
         ),
