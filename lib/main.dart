@@ -158,13 +158,25 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       backgroundColor: AppBarTheme.of(context).backgroundColor,
       actions: [
+        if (isLandscape)
+          IconButton(
+            icon: Icon(
+              (_showChart ? Icons.list : Icons.pie_chart),
+              color: Theme.of(context).colorScheme.inversePrimary,
+            ),
+            onPressed: () {
+              setState(() {
+                _showChart = !_showChart;
+              });
+            },
+          ),
         IconButton(
           icon: Icon(
             Icons.add,
             color: Theme.of(context).colorScheme.inversePrimary,
           ),
           onPressed: () => _openTransactionFormModal(context),
-        )
+        ),
       ],
     );
 
@@ -182,25 +194,25 @@ class _MyHomePageState extends State<MyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Exibir Gráfico",
-                    style:
-                        TextStyle(color: Theme.of(context).colorScheme.primary),
-                  ),
-                  Switch(
-                    value: _showChart,
-                    onChanged: (value) {
-                      setState(() {
-                        _showChart = value;
-                      });
-                    },
-                  ),
+                  // Text(
+                  //   "Exibir Gráfico",
+                  //   style:
+                  //       TextStyle(color: Theme.of(context).colorScheme.primary),
+                  // ),
+                  // Switch(
+                  //   value: _showChart,
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //       _showChart = value;
+                  //     });
+                  //   },
+                  // ),
                 ],
               ),
             if (_showChart || !isLandscape)
               // Grafico
               Container(
-                height: availableHeight * (isLandscape ? 0.6 : 0.25),
+                height: availableHeight * (isLandscape ? 0.7 : 0.25),
                 child: Chart(recentTransaction: _recentTransactions),
               ),
             if (!_showChart || !isLandscape)
