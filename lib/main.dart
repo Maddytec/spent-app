@@ -190,34 +190,15 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Text(
-                  //   "Exibir Gráfico",
-                  //   style:
-                  //       TextStyle(color: Theme.of(context).colorScheme.primary),
-                  // ),
-                  // Switch(
-                  //   value: _showChart,
-                  //   onChanged: (value) {
-                  //     setState(() {
-                  //       _showChart = value;
-                  //     });
-                  //   },
-                  // ),
-                ],
-              ),
             if (_showChart || !isLandscape)
               // Grafico
               Container(
-                height: availableHeight * (isLandscape ? 0.7 : 0.25),
+                height: availableHeight * (isLandscape ? 0.75 : 0.25),
                 child: Chart(recentTransaction: _recentTransactions),
               ),
             if (!_showChart || !isLandscape)
               Container(
-                height: availableHeight * 0.70,
+                height: availableHeight * (isLandscape ? 0.9 : 0.7),
                 child: TransactionList(
                   transactions: _transactions,
                   onRemove: _removeTransaction,
