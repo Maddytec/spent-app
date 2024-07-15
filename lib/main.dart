@@ -154,11 +154,11 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             // Grafico
             Container(
-              height: availableHeight * 0.3,
+              height: availableHeight * 0.25,
               child: Chart(recentTransaction: _recentTransactions),
             ),
             Container(
-              height: availableHeight * 0.7,
+              height: availableHeight * 0.70,
               child: TransactionList(
                 transactions: _transactions,
                 onRemove: _removeTransaction,
