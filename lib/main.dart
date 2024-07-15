@@ -41,6 +41,26 @@ class SpentApp extends StatelessWidget {
         iconTheme: IconThemeData(
           color: inversePrimary,
         ),
+        switchTheme: SwitchThemeData(
+          trackOutlineColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) {
+              return primary;
+            }
+            return secondary;
+          }),
+          trackColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) {
+              return primary;
+            }
+            return inversePrimary;
+          }),
+          thumbColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) {
+              return secondary;
+            }
+            return secondary;
+          }),
+        ),
         iconButtonTheme: IconButtonThemeData(),
         textTheme: theme.textTheme.copyWith(
           titleSmall: TextStyle(
@@ -88,6 +108,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [];
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((transaction) {
@@ -128,8 +149,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     final appBar = AppBar(
-      title: Text("Despesas Pessoais"),
+      title: Text(
+        "Despesas Pessoais",
+      ),
       backgroundColor: AppBarTheme.of(context).backgroundColor,
       actions: [
         IconButton(
@@ -152,18 +178,39 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Grafico
-            Container(
-              height: availableHeight * 0.25,
-              child: Chart(recentTransaction: _recentTransactions),
-            ),
-            Container(
-              height: availableHeight * 0.70,
-              child: TransactionList(
-                transactions: _transactions,
-                onRemove: _removeTransaction,
+            if (isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Exibir Gráfico",
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
+                  ),
+                  Switch(
+                    value: _showChart,
+                    onChanged: (value) {
+                      setState(() {
+                        _showChart = value;
+                      });
+                    },
+                  ),
+                ],
               ),
-            ),
+            if (_showChart || !isLandscape)
+              // Grafico
+              Container(
+                height: availableHeight * (isLandscape ? 0.6 : 0.25),
+                child: Chart(recentTransaction: _recentTransactions),
+              ),
+            if (!_showChart || !isLandscape)
+              Container(
+                height: availableHeight * 0.70,
+                child: TransactionList(
+                  transactions: _transactions,
+                  onRemove: _removeTransaction,
+                ),
+              ),
           ],
         ),
       ),
